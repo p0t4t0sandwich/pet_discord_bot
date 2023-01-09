@@ -5,92 +5,38 @@ on:
     branches: [ main ]
 
 jobs:
-  # test:
-  #   name: Test
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v3
-  #     - uses: actions/setup-node@v3
-  #       with:
-  #         node-version: 18
-  #     - run: npm ci
-  #     - run: npm test
-  #     - run: npm run build
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - run: npm ci
+      - run: npm test
+      - run: npm run build
 
-  # build:
-  #   name: Build
-  #   runs-on: ubuntu-latest
-  #   environment: pet-bot
-  #   steps:
-  #     -
-  #       name: Set up QEMU
-  #       uses: docker/setup-qemu-action@v2
-  #     -
-  #       name: Set up Docker Buildx
-  #       uses: docker/setup-buildx-action@v2
-  #     -
-  #       name: Login to Docker Hub
-  #       uses: docker/login-action@v2
-  #       with:
-  #         username: ${{ secrets.DOCKERHUB_USERNAME }}
-  #         password: ${{ secrets.DOCKERHUB_TOKEN }}
-  #     -
-  #       name: Build and push
-  #       uses: docker/build-push-action@v3
-  #       with:
-  #         push: true
-  #         tags: ${{ secrets.DOCKERHUB_USERNAME }}/pet_discord_bot:latest
-
-  deploy:
-    name: Deploy
-    # needs: build
-    runs-on: ubuntu-20.04
+  build:
+    name: Build
+    runs-on: ubuntu-latest
     environment: pet-bot
     steps:
       -
-        name: Clone Repository
-        uses: actions/checkout@v2
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
       -
-        name: Deploy Stack
-        uses: kgierke/portainer-stack-deployment@v1
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      -
+        name: Login to Docker Hub
+        uses: docker/login-action@v2
         with:
-          portainer-url: ${{ secrets.PORTAINER_URL }}
-          portainer-username: ${{ secrets.PORTAINER_USERNAME }}
-          portainer-password: ${{ secrets.PORTAINER_PASSWORD }}
-          portainer-endpoint: 1
-          name: stack-name
-          file: .github/stack/staging.yml
-          variables: '{"DISCORD_TOKEN": "${{ secrets.MAISY_DISCORD_TOKEN }}", "PET_NAME": "maisy", "SUPABASE_URL": "${{ secrets.SUPABASE_URL }}", "SUPABASE_KEY": "${{ secrets.SUPABASE_KEY }}"}'
-
-    # steps:
-    #   - 
-    #     name: Checkout
-    #     uses: actions/checkout@v3
-    #   - 
-    #     name: Portainer Deploy Stack
-    #     uses: bots-house/portainer-deploy-stack-action@v1.0.0
-    #     with:
-    #       # url of Poratainer instance
-    #       portainer-url: 
-
-    #       # portainer auth
-          
-          
-    #       # internal portainer cluster id
-    #       portainer-endpoint: 2
-          
-    #       # stack name
-    #       stack-name: maisy_bot
-
-    #       # docker stack file location
-    #       stack-file: 
-
-    #       # vars to substitute in stack
-    #       stack-vars: |
-    #         DISCORD_TOKEN: ${{ secrets.MAISY_DISCORD_TOKEN }}
-    #         PET_NAME: maisy
-    #         SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-    #         SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
-
-          # grant access for specified teams
-          # teams: Microservices, Bots House Family
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      -
+        name: Build and push
+        uses: docker/build-push-action@v3
+        with:
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/pet_discord_bot:latest
