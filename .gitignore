@@ -3,5 +3,4 @@ node_modules
 config.json
 deploy-commands.js
 .dockerignore
-package-lock.json
 docker-compose.yml

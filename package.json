@@ -1,6 +1,6 @@
 {
   "type": "module",
-  "name": "maisy_bot",
+  "name": "pet_discord_bot",
   "version": "1.0.0",
   "description": "",
   "main": "src/index.js",
