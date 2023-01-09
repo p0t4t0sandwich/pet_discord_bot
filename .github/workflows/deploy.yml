@@ -47,35 +47,50 @@ jobs:
     runs-on: ubuntu-20.04
     environment: pet-bot
     steps:
-      - 
-        name: Checkout
-        uses: actions/checkout@v3
-      - 
-        name: Portainer Deploy Stack
-        uses: bots-house/portainer-deploy-stack-action@v1.0.0
+      -
+        name: Clone Repository
+        uses: actions/checkout@v2
+      -
+        name: Deploy Stack
+        uses: kgierke/portainer-stack-deployment@v1
         with:
-          # url of Poratainer instance
           portainer-url: ${{ secrets.PORTAINER_URL }}
-
-          # portainer auth
           portainer-username: ${{ secrets.PORTAINER_USERNAME }}
           portainer-password: ${{ secrets.PORTAINER_PASSWORD }}
-          
-          # internal portainer cluster id
           portainer-endpoint: 2
+          name: stack-name
+          file: .github/stack/staging.yml
+          variables: '{"DISCORD_TOKEN": "${{ secrets.MAISY_DISCORD_TOKEN }}", "PET_NAME": "maisy", "SUPABASE_URL": "${{ secrets.SUPABASE_URL }}", "SUPABASE_KEY": "${{ secrets.SUPABASE_KEY }}"}'
+
+    # steps:
+    #   - 
+    #     name: Checkout
+    #     uses: actions/checkout@v3
+    #   - 
+    #     name: Portainer Deploy Stack
+    #     uses: bots-house/portainer-deploy-stack-action@v1.0.0
+    #     with:
+    #       # url of Poratainer instance
+    #       portainer-url: 
+
+    #       # portainer auth
           
-          # stack name
-          stack-name: maisy_bot
+          
+    #       # internal portainer cluster id
+    #       portainer-endpoint: 2
+          
+    #       # stack name
+    #       stack-name: maisy_bot
 
-          # docker stack file location
-          stack-file: .github/stack/staging.yml
+    #       # docker stack file location
+    #       stack-file: 
 
-          # vars to substitute in stack
-          stack-vars: |
-            DISCORD_TOKEN: ${{ secrets.MAISY_DISCORD_TOKEN }}
-            PET_NAME: maisy
-            SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-            SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+    #       # vars to substitute in stack
+    #       stack-vars: |
+    #         DISCORD_TOKEN: ${{ secrets.MAISY_DISCORD_TOKEN }}
+    #         PET_NAME: maisy
+    #         SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+    #         SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
 
           # grant access for specified teams
           # teams: Microservices, Bots House Family
