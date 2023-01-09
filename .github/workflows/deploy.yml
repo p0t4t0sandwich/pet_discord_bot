@@ -62,7 +62,7 @@ jobs:
           portainer-password: ${{ secrets.PORTAINER_PASSWORD }}
           
           # internal portainer cluster id
-          portainer-endpoint: 1
+          portainer-endpoint: 2
           
           # stack name
           stack-name: maisy_bot
