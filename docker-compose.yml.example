@@ -7,6 +7,7 @@ services:
     environment:
       - TZ=UTC
       - DISCORD_TOKEN=                      # The token of the Discord bot
+      - BOT_CLIENT_ID=                      # Bot's Client ID
       - SUPABASE_URL=                       # Supabase URL
       - SUPABASE_KEY=                       # Supabase key
       - PET_NAME=                           # Pet name
