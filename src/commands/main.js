@@ -31,7 +31,7 @@ export const command = {
 					console.log(error);
 					return
 				}
-			
+
 			let { data: image, error2 } = await supabase
 				.from(pet)
 				.select('*')

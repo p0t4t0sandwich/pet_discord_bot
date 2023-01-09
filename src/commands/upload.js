@@ -7,7 +7,7 @@ const pet = process.env.PET_NAME
 
 async function uploadToDB(url) {
 	return new Promise(async (resolve) => {
-		try{
+		try {
 			await request({
 				url: url,
 				method: 'GET',
@@ -16,23 +16,35 @@ async function uploadToDB(url) {
 				const base64 = Buffer.from(result).toString('base64');
 				const hash = CryptoJS.MD5(base64).toString();
 
-				const { data, error } = await supabase
+				let { data: likeness, error } = await supabase
+					.from(pet)
+					.select('*')
+					.eq("md5", hash)
+					.limit(1)
+					.single();
+
+				if (likeness !== null) {
+					console.log(`Image already exists in table ${pet}`)
+					resolve(false);
+				}
+
+				const { data, error2 } = await supabase
 					.from(pet)
 					.upsert({ md5: hash });
 
-				if (error) {
+				if (error2) {
 					console.log(`Something went wrong with upsert-ing: ${hash}`);
 					resolve(false);
 				}
 
-				const { data2, error2 } = await supabase
+				const { data2, error3 } = await supabase
 					.from(pet)
 					.update({
 						image: base64
 					})
 					.eq("md5", hash);
 
-				if (error2) {
+				if (error3) {
 					console.log(`Something went wrong with uploading base64: ${hash}`);
 					resolve(false);
 				}
@@ -72,7 +84,7 @@ export const command = {
 			const user = interaction.user.tag
 			const embed = { color: 0x877f23 };
 
-			if (user === "ThePotatoKing#3452" || user === "sydthekid08#0008" || user === "Le CentryxX#0714" ) {
+			if (user === "ThePotatoKing#3452" || (user === "sydthekid08#0008" && pet=="maisy") || (user === "Le CentryxX#0714" && pet=="xena") || (user === "TeaRose#4112" && pet=="lucky") ) {
 				let counter = 0;
 				const image = interaction.options.getAttachment("image");
 				if (image && (await uploadToDB(image.url))) counter += 1;
