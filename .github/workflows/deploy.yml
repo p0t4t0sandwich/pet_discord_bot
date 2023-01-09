@@ -57,7 +57,7 @@ jobs:
           portainer-url: ${{ secrets.PORTAINER_URL }}
           portainer-username: ${{ secrets.PORTAINER_USERNAME }}
           portainer-password: ${{ secrets.PORTAINER_PASSWORD }}
-          portainer-endpoint: 2
+          portainer-endpoint: 1
           name: stack-name
           file: .github/stack/staging.yml
           variables: '{"DISCORD_TOKEN": "${{ secrets.MAISY_DISCORD_TOKEN }}", "PET_NAME": "maisy", "SUPABASE_URL": "${{ secrets.SUPABASE_URL }}", "SUPABASE_KEY": "${{ secrets.SUPABASE_KEY }}"}'
