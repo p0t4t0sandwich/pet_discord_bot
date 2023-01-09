@@ -1,4 +1,4 @@
-name: Pet Discord Bot Test Request
+name: Pet Discord Bot Test Pull Request CI
 
 on:
   pull_request:
