@@ -1,0 +1,13 @@
+---
+version: "3.8"
+services:
+  PET_NAME:
+    image: p0t4t0sandwich/pet_discord_bot:latest
+    container_name: PET_NAME
+    environment:
+      - TZ=UTC
+      - DISCORD_TOKEN=                      # The token of the Discord bot
+      - SUPABASE_URL=                       # Supabase URL
+      - SUPABASE_KEY=                       # Supabase key
+      - PET_NAME=                           # Pet name
+    restart: unless-stopped

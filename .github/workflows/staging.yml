@@ -1,0 +1,9 @@
+---
+version: "3.8"
+services:
+  maisy_bot:
+    image: p0t4t0sandwich/pet_discord_bot:latest
+    container_name: maisy_bot
+    environment:
+      - TZ=UTC
+    restart: unless-stopped
