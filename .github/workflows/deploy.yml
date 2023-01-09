@@ -50,9 +50,9 @@ jobs:
       - 
         name: Setup
         uses: actions/checkout@v3
-      - 
-        name: Deploy
-        uses: bots-house/portainer-deploy-stack-action
+      # - 
+      #   name: Deploy
+      #   uses: bots-house/portainer-deploy-stack-action
         # with:
         #   # url of Poratainer instance
         #   portainer-url: ${{ secrets.PORTAINER_URL }}
