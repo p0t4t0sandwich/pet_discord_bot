@@ -48,34 +48,34 @@ jobs:
     environment: pet-bot
     steps:
       - 
-        name: Setup
+        name: Checkout
         uses: actions/checkout@v3
       - 
-        name: Deploy
-        uses: bots-house/portainer-deploy-stack-action
-        # with:
-        #   # url of Poratainer instance
-        #   portainer-url: ${{ secrets.PORTAINER_URL }}
+        name: Portainer Deploy Stack
+        uses: bots-house/portainer-deploy-stack-action@v1.0.0
+        with:
+          # url of Poratainer instance
+          portainer-url: ${{ secrets.PORTAINER_URL }}
 
-        #   # portainer auth
-        #   portainer-username: ${{ secrets.PORTAINER_USERNAME }}
-        #   portainer-password: ${{ secrets.PORTAINER_PASSWORD }}
+          # portainer auth
+          portainer-username: ${{ secrets.PORTAINER_USERNAME }}
+          portainer-password: ${{ secrets.PORTAINER_PASSWORD }}
           
-        #   # internal portainer cluster id
-        #   portainer-endpoint: 1
+          # internal portainer cluster id
+          portainer-endpoint: 1
           
-        #   # stack name
-        #   stack-name: maisy_bot
+          # stack name
+          stack-name: maisy_bot
 
-        #   # docker stack file location
-        #   stack-file: .github/stack/staging.yml
-          
-        #   # vars to substitute in stack
-        #   stack-vars: |
-        #     DISCORD_TOKEN: ${{ secrets.MAISY_DISCORD_TOKEN }}
-        #     PET_NAME: maisy
-        #     SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-        #     SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+          # docker stack file location
+          stack-file: .github/stack/staging.yml
+
+          # vars to substitute in stack
+          stack-vars: |
+            DISCORD_TOKEN: ${{ secrets.MAISY_DISCORD_TOKEN }}
+            PET_NAME: maisy
+            SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+            SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
 
           # grant access for specified teams
           # teams: Microservices, Bots House Family
