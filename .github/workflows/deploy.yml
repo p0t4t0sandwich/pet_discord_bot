@@ -39,7 +39,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           push: true
-          tags: user/pet_discord_bot:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/pet_discord_bot:latest
 
   # deploy:
   #   name: Deploy
