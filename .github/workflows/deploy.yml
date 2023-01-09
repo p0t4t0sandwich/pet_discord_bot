@@ -47,7 +47,7 @@ jobs:
     runs-on: ubuntu-20.04
     environment: pet-bot
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: bots-house/portainer-deploy-stack-action
         with:
           # url of Poratainer instance
