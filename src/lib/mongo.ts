@@ -1,7 +1,7 @@
 import { Db, MongoClient } from "mongodb";
 
 const connectionString = process.env.MONGODB_URI;
-const databaseName = process.env.DATABASE_NAME;
+const databaseName = process.env.MONGODB_DB;
 
 const client = new MongoClient(connectionString);
 
