@@ -4,7 +4,10 @@ const token = process.env.DISCORD_TOKEN
 const clientId = process.env.BOT_CLIENT_ID
 
 // Create a new client instance
-const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+interface CustomClient extends Client {
+    commands: Collection<string, any>;
+}
+export const client: CustomClient = <CustomClient>(new Client({ intents: [GatewayIntentBits.Guilds] }));
 
 // Commands
 const commands = [];
@@ -13,6 +16,10 @@ client.commands = new Collection();
 import { command as main } from './commands/main.js';
 client.commands.set(main.data.name, main);
 commands.push(main.data.toJSON());
+
+import { command as changealias } from './commands/changealias.js';
+client.commands.set(changealias.data.name, changealias);
+commands.push(changealias.data.toJSON());
 
 import { command as setalias } from './commands/setalias.js';
 client.commands.set(setalias.data.name, setalias);
@@ -28,7 +35,7 @@ const rest = new REST({ version: '10' }).setToken(token);
 client.on(Events.InteractionCreate, async interaction => {
 	if (!interaction.isChatInputCommand()) return;
 
-	const command = interaction.client.commands.get(interaction.commandName);
+	const command = (<CustomClient>interaction.client).commands.get(interaction.commandName);
 
 	if (!command) {
 		console.error(`No command matching ${interaction.commandName} was found.`);
@@ -50,16 +57,14 @@ client.once(Events.ClientReady, c => {
 	(async () => {
 		try {
 			console.log(`Started refreshing ${commands.length} application (/) commands.`);
-	
-			// The put method is used to fully refresh all commands in the guild with the current set
-			const data = await rest.put(
+			const data = <any[]>(await rest.put(
 				Routes.applicationCommands(clientId),
 				{ body: commands },
-			);
-	
+			));
+
 			console.log(`Successfully reloaded ${data.length} application (/) commands.`);
+
 		} catch (error) {
-			// And of course, make sure you catch and log any errors!
 			console.error(error);
 		}
 	})();

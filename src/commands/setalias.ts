@@ -1,7 +1,13 @@
 import { SlashCommandBuilder } from 'discord.js';
-import { supabase } from "../lib/db.js";
 
-const pet = process.env.PET_NAME
+
+import { db } from "../lib/mongo.js"
+import { dbHandler } from '../lib/dbHander.js';
+
+
+const pet = process.env.PET_NAME;
+const dbh = new dbHandler(db, pet);
+
 
 export const command = {
 	data: new SlashCommandBuilder()
@@ -20,23 +26,18 @@ export const command = {
 			const alias = interaction.options.getString('alias');
 			const hash = interaction.options.getString('hash');
 
-			const { data, error } = await supabase
-				.from(pet)
-				.update({
-					alias: alias
-				})
-				.eq("md5", hash);
+			const succcess = await dbh.setAlias(hash, alias);
 
-			if (error) {
-				console.log(error);
-				return
+			const embed = { color: 0x877f23, description: "" };
+
+			if (succcess) {
+				embed.description = `${hash} now has the alias of ${alias}!`;
+			} else {
+				embed.description = `Failed to set alias for ${hash}!`;
 			}
-			
-			const embed = {
-				color: 0x877f23,
-				description: `${hash} now has the alias of ${alias}!`
-			};
+
 			await interaction.followUp({ embeds: [embed] });
+
 		} catch (err) {
 			console.log(err);
 		}
