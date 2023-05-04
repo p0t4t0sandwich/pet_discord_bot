@@ -5,7 +5,7 @@ import { db } from "../lib/mongo.js"
 import { dbHandler } from '../lib/dbHander.js';
 
 
-const pet = process.env.PET_NAME;
+const pet: string = process.env.PET_NAME;
 const dbh = new dbHandler(db, pet);
 
 export const command = {

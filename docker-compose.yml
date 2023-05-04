@@ -9,6 +9,7 @@ services:
       - DISCORD_TOKEN=                      # The token of the Discord bot
       - BOT_CLIENT_ID=                      # Bot's Client ID
       - PET_NAME=                           # Pet name
+      - UPLOAD_USERS=                       # Discord user IDs that can upload images, separated by commas
       - MONGODB_URI=                        # MongoDB URI
       - MONGODB_DB=                         # MongoDB database name
     restart: unless-stopped

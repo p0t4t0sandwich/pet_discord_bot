@@ -5,7 +5,8 @@ import { db } from "../lib/mongo.js"
 import { dbHandler } from '../lib/dbHander.js';
 
 
-const pet = process.env.PET_NAME;
+const pet: string = process.env.PET_NAME;
+const uploadUsers: string[] = process.env.UPLOAD_USERS.split(",");
 const dbh = new dbHandler(db, pet);
 
 
@@ -32,10 +33,10 @@ export const command = {
 		try {
 			await interaction.deferReply();
 
-			const user = interaction.user.tag
+			const user = interaction.user.id
 			const embed = { color: 0x877f23, description: "" };
 
-			if (user === "ThePotatoKing#3452" || (user === "sydthekid08#0008" && pet=="maisy") || (user === "Le CentryxX#0714" && pet=="xena") || (user === "TeaRose#4112" && pet=="lucky") ) {
+			if (uploadUsers.includes(user)) {
 				let counter = 0;
 				const image = interaction.options.getAttachment("image");
 				if (image && (await dbh.uploadToDB(image.url))) counter += 1;
