@@ -16,8 +16,6 @@ COPY ./commands ./commands
 
 COPY index.ts ./
 
-RUN ls
-
 RUN /app/node_modules/typescript/bin/tsc -p /app/tsconfig.build.json
 
 CMD ["node", "./dist/index.js"]
