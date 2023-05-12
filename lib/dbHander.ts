@@ -89,7 +89,7 @@ export class dbHandler {
             const result = (await this.db.collection(this.pet).aggregate([{ $sample: { size: 1 } }]).toArray())[0];
 
             // if no result, return empty image
-            if (result.length === 0) {
+            if (result === undefined || result.length === 0) {
                 return <Image>{
                     md5: "",
                     alias: "",
