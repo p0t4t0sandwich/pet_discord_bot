@@ -54,6 +54,42 @@ export class dbHandler {
         }
     }
 
+    async uploadBufferToDB(hash: string, alias: string, image: Buffer): Promise<boolean> {
+        try {
+            const base64 = Buffer.from(image).toString('base64');
+            const hash1 = CryptoJS.MD5(base64).toString();
+
+            const match = (hash == hash1);
+            if (!match) {
+                console.log("Hash mismatch, skipping image");
+                return false;
+            }
+
+            const dbResult = await this.db.collection(this.pet).findOne({ md5: hash });
+
+            if (dbResult !== null) {
+                console.log("Image already exists in DB");
+                return false;
+            }
+
+            const result = await this.db.collection(this.pet).insertOne({
+                md5: hash,
+                alias: alias,
+                file: Buffer.from(image)
+            });
+
+            if (result.insertedId !== null) {
+                console.log("Image added to DB");
+                return true;
+            }
+
+            return false;
+
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
     async downloadFromDB(hash: string): Promise<Image> {
         try {
             let result = await this.db.collection(this.pet).findOne({ md5: hash });
@@ -131,39 +167,6 @@ export class dbHandler {
 
             if (result.modifiedCount === 1) {
                 console.log("Alias changed");
-                return true;
-            }
-
-            return false;
-
-        } catch (err) {
-            console.log(err);
-        }
-    }
-
-    //TEMP
-    async uploadBufferToDB(hash: string, alias: string, image: Buffer): Promise<boolean> {
-        try {
-            const base64 = Buffer.from(image).toString('base64');
-            const hash1 = CryptoJS.MD5(base64).toString();
-
-            console.log(hash == hash1);
-
-            const dbResult = await this.db.collection(this.pet).findOne({ md5: hash });
-
-            if (dbResult !== null) {
-                console.log("Image already exists in DB");
-                return false;
-            }
-
-            const result = await this.db.collection(this.pet).insertOne({
-                md5: hash,
-                alias: alias,
-                file: Buffer.from(image)
-            });
-
-            if (result.insertedId !== null) {
-                console.log("Image added to DB");
                 return true;
             }
 
